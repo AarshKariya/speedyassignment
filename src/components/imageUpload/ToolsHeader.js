@@ -11,7 +11,6 @@ import {
   TbColorPicker,
 } from "react-icons/tb";
 import downloadjs from "downloadjs";
-import html2canvas from "html2canvas";
 
 const ToolsHeader = ({
   showTextTools,
@@ -19,28 +18,45 @@ const ToolsHeader = ({
   setFilter,
   setBorder,
   setTheme,
+  filter,
 }) => {
-  const handleDownload = async () => {
-    setShowTextTools(false);
-    try {
-      const editedImageElement = document.querySelector(".edited-image");
-
-      if (!editedImageElement) {
-        console.error("Edited image element not found");
-        return;
-      }
-
-      const canvas = await html2canvas(editedImageElement);
-      const dataURL = canvas.toDataURL("image/png");
-
-      if (dataURL) {
-        downloadjs(dataURL, "download.png", "image/png");
-      } else {
-        console.error("Failed to generate Data URL");
-      }
-    } catch (error) {
-      console.error("Error downloading image:", error);
+  const getFilter = (filter) => {
+    switch (filter) {
+      case "light-sepia":
+        return "sepia(100%)";
+      case "dark-grayscale":
+        return "grayscale(100%)";
+      case "dark-blur":
+        return "blur(3px)";
+      default:
+        return "none";
     }
+  };
+
+  const applyFilterAndDownload = async () => {
+    const editedImage = document.querySelector(".edited-image img");
+
+    const newImage = new Image();
+    newImage.crossOrigin = "anonymous"; // Enable cross-origin access if needed
+    newImage.onload = async () => {
+      // Create a canvas and draw the filtered image onto it
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = newImage.width;
+      canvas.height = newImage.height;
+
+      // Apply the filter-based filter to the image
+      const filteredStyle = getFilter(filter);
+      ctx.filter = filteredStyle;
+      ctx.drawImage(newImage, 0, 0);
+
+      // Get the resulting image as a data URL and download it
+      const dataURL = canvas.toDataURL("image/png");
+      downloadjs(dataURL, "filterd_image.png", "image/png");
+    };
+
+    // Set the source of the new image to the original image source
+    newImage.src = editedImage.src;
   };
 
   return (
@@ -64,7 +80,7 @@ const ToolsHeader = ({
           setBorder();
         }}
       />
-      <TbDownload size={20} onClick={() => handleDownload()} />
+      <TbDownload size={20} onClick={() => applyFilterAndDownload()} />
     </div>
   );
 };

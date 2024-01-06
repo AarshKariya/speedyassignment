@@ -16,6 +16,7 @@ const ImageEditor = ({ selectedImage }) => {
         setFilter={setFilter}
         setBorder={setBorder}
         setTheme={setTheme}
+        filter={filter}
       />
       {selectedImage && (
         <div className="edited-image">
