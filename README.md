@@ -6,6 +6,23 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 You can check the website out at [Speedy Assignment](https://65991c725fbe69b3df78c14f--resilient-bavarois-52d0dc.netlify.app/)
 
+## Steps
+
+You will land on the authentication page. You can either sign-in or sign-up.
+
+Since it's a mock authentication, the credentials for login have been set as follows:
+
+Log-in page credentials:
+
+- Username: demo
+- Password: demo123
+
+Notes:
+
+- For sign-up page, any credentials will work.
+- Once logged in you will be redirected to image upload page.
+- Username is validated for special characters. You can use alphanumeric characters.
+
 ## Available Scripts
 
 In the project directory, you can run:
