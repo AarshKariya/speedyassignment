@@ -11,6 +11,7 @@ import {
   TbColorPicker,
 } from "react-icons/tb";
 import downloadjs from "downloadjs";
+import html2canvas from "html2canvas";
 
 const ToolsHeader = ({
   showTextTools,
@@ -59,6 +60,29 @@ const ToolsHeader = ({
     newImage.src = editedImage.src;
   };
 
+  const handleDownload = async () => {
+    setShowTextTools(false);
+    try {
+      const editedImageElement = document.querySelector(".edited-image");
+
+      if (!editedImageElement) {
+        console.error("Edited image element not found");
+        return;
+      }
+
+      const canvas = await html2canvas(editedImageElement);
+      const dataURL = canvas.toDataURL("image/png");
+
+      if (dataURL) {
+        downloadjs(dataURL, "download.png", "image/png");
+      } else {
+        console.error("Failed to generate Data URL");
+      }
+    } catch (error) {
+      console.error("Error downloading image:", error);
+    }
+  };
+
   return (
     <div className="tools">
       <TbTextSize
@@ -66,12 +90,54 @@ const ToolsHeader = ({
         onClick={() => setShowTextTools(!showTextTools)}
         style={{ border: showTextTools ? "2px solid #0b8946" : "none" }}
       />
-      <TbSunHigh size={20} onClick={() => setTheme("light-theme")} />
-      <TbMoonFilled size={20} onClick={() => setTheme("dark-theme")} />
-      <TbBorderSides size={20} onClick={() => setBorder((prev) => !prev)} />
-      <TbColorFilter size={20} onClick={() => setFilter("dark-grayscale")} />
-      <TbBlur size={20} onClick={() => setFilter("dark-blur")} />
-      <TbColorPicker size={20} onClick={() => setFilter("light-sepia")} />
+      <TbSunHigh
+        size={20}
+        onClick={() => {
+          setTheme("light-theme");
+          setFilter();
+          setBorder();
+        }}
+      />
+      <TbMoonFilled
+        size={20}
+        onClick={() => {
+          setTheme("dark-theme");
+          setFilter();
+          setBorder();
+        }}
+      />
+      <TbBorderSides
+        size={20}
+        onClick={() => {
+          setBorder((prev) => !prev);
+          setTheme();
+          setFilter();
+        }}
+      />
+      <TbColorFilter
+        size={20}
+        onClick={() => {
+          setFilter("dark-grayscale");
+          setTheme();
+          setBorder();
+        }}
+      />
+      <TbBlur
+        size={20}
+        onClick={() => {
+          setFilter("dark-blur");
+          setTheme();
+          setBorder();
+        }}
+      />
+      <TbColorPicker
+        size={20}
+        onClick={() => {
+          setFilter("light-sepia");
+          setTheme();
+          setBorder();
+        }}
+      />
       <TbBan
         size={20}
         onClick={() => {
@@ -80,7 +146,10 @@ const ToolsHeader = ({
           setBorder();
         }}
       />
-      <TbDownload size={20} onClick={() => applyFilterAndDownload()} />
+      <TbDownload
+        size={20}
+        onClick={() => (filter ? applyFilterAndDownload() : handleDownload())}
+      />
     </div>
   );
 };
