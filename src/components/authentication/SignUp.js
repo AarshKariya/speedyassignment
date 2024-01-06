@@ -14,7 +14,7 @@ const SignUp = ({
 }) => {
   return (
     <>
-      <h2>Signup</h2>
+      <h2>Sign-Up!</h2>
       <form className={styles.formStyle} onSubmit={handleSignup}>
         <input
           type="text"

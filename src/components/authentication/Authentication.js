@@ -13,6 +13,7 @@ const Authentication = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
+  const [showSignUp, setShowSignUp] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -47,26 +48,37 @@ const Authentication = () => {
     }
   };
 
+  const handleShowSignUp = () => {
+    setShowSignUp(true);
+    setError("");
+  };
+
   return !loggedIn ? (
     <div className={styles.authStyle}>
-      <LogIn
-        handleLogin={handleLogin}
-        setUsername={setUsername}
-        username={username}
-        password={password}
-        setPassword={setPassword}
-      />
-      <SignUp
-        handleSignup={handleSignup}
-        firstName={firstName}
-        setFirstName={setFirstName}
-        lastName={lastName}
-        setLastName={setLastName}
-        signupUsername={signupUsername}
-        setSignupUsername={setSignupUsername}
-        signupPassword={signupPassword}
-        setSignupPassword={setSignupPassword}
-      />
+      {!showSignUp ? (
+        <div>
+          <LogIn
+            handleLogin={handleLogin}
+            setUsername={setUsername}
+            username={username}
+            password={password}
+            setPassword={setPassword}
+            handleShowSignUp={handleShowSignUp}
+          />
+        </div>
+      ) : (
+        <SignUp
+          handleSignup={handleSignup}
+          firstName={firstName}
+          setFirstName={setFirstName}
+          lastName={lastName}
+          setLastName={setLastName}
+          signupUsername={signupUsername}
+          setSignupUsername={setSignupUsername}
+          signupPassword={signupPassword}
+          setSignupPassword={setSignupPassword}
+        />
+      )}
       {error && <p>{error}</p>}
     </div>
   ) : (

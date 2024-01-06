@@ -7,10 +7,11 @@ const LogIn = ({
   username,
   password,
   setPassword,
+  handleShowSignUp,
 }) => {
   return (
     <>
-      <h2>Login</h2>
+      <h2>Login!</h2>
       <form className={styles.formStyle} onSubmit={handleLogin}>
         <input
           type="text"
@@ -28,6 +29,9 @@ const LogIn = ({
         />
         <button type="submit" className={styles.buttonStyle}>
           Login
+        </button>
+        <button className={styles.signUpBtnStyle} onClick={handleShowSignUp}>
+          New User? Sign-Up!
         </button>
       </form>
     </>
